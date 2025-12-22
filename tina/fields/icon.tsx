@@ -33,13 +33,12 @@ export const IconPickerInput = wrapFieldsWithMeta(({ input }) => {
         ? parseIconName(input.value)
         : "Select Icon";
 
-    //@ts-ignore
-    const InputIcon = IconOptions[input.value]
-        ? IconOptions[input.value]
+    const InputIcon = (IconOptions as any)[input.value]
+        ? (IconOptions as any)[input.value]
         : null;
 
     return (
-        <div className="relative z-[1000]">
+        <div className="relative z-1000">
             <input type="text" id={input.name} className="hidden" {...input} />
             <Popover>
                 {({ open }) => (

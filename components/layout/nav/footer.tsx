@@ -30,7 +30,11 @@ export const Footer = () => {
                             ) : (
                                 <Icon
                                     parentColor={header!.color!}
-                                    data={header!.icon}
+                                    data={{
+                                        name: header!.icon?.name || "",
+                                        color: header!.icon?.color || undefined,
+                                        style: header!.icon?.style || undefined,
+                                    }}
                                 />
                             )}
                         </Link>
@@ -41,19 +45,29 @@ export const Footer = () => {
                     </div>
 
                     <div className="order-first flex justify-center gap-6 text-sm md:order-last md:justify-end">
-                        {footer?.social?.map((link, index) => (
-                            <Link
-                                key={`${link!.icon}${index}`}
-                                href={link!.url!}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <Icon
-                                    data={{ ...link!.icon, size: "small" }}
-                                    className="text-muted-foreground hover:text-primary block"
-                                />
-                            </Link>
-                        ))}
+                        {footer?.social?.map((link, index) => {
+                            if (!link) return null;
+                            return (
+                                <Link
+                                    key={`${link.icon}${index}`}
+                                    href={link.url || "#"}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <Icon
+                                        data={{
+                                            name: link.icon?.name || "",
+                                            color:
+                                                link.icon?.color || undefined,
+                                            style:
+                                                link.icon?.style || undefined,
+                                            size: "small",
+                                        }}
+                                        className="text-muted-foreground hover:text-primary block"
+                                    />
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

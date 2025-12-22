@@ -42,10 +42,19 @@ export const CallToAction = ({ data }: { data: PageBlocksCta }) => {
                                     }
                                     className="rounded-xl px-5 text-base"
                                 >
-                                    <Link href={action!.link!}>
+                                    <Link href={action!.link || "#"}>
                                         {action?.icon && (
                                             <Icon
-                                                data={action?.icon}
+                                                data={{
+                                                    name:
+                                                        action.icon.name || "",
+                                                    color:
+                                                        action.icon.color ||
+                                                        undefined,
+                                                    style:
+                                                        action.icon.style ||
+                                                        undefined,
+                                                }}
                                                 className="text-inherit"
                                             />
                                         )}

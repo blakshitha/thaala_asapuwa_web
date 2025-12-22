@@ -39,9 +39,13 @@ export const Header = () => {
                                         <Icon
                                             parentColor={header.color!}
                                             data={{
-                                                name: header.icon!.name,
-                                                color: header.icon!.color,
-                                                style: header.icon!.style,
+                                                name: header.icon!.name || "",
+                                                color:
+                                                    header.icon!.color ||
+                                                    undefined,
+                                                style:
+                                                    header.icon!.style ||
+                                                    undefined,
                                             }}
                                         />
                                         <span>{header.name}</span>
@@ -68,16 +72,19 @@ export const Header = () => {
 
                             <div className="hidden lg:block">
                                 <ul className="flex gap-8 text-sm">
-                                    {header.nav!.map((item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                href={item!.href!}
-                                                className="text-zinc-300 hover:text-primary block duration-150"
-                                            >
-                                                <span>{item!.label}</span>
-                                            </Link>
-                                        </li>
-                                    ))}
+                                    {header.nav?.map((item, index) => {
+                                        if (!item) return null;
+                                        return (
+                                            <li key={index}>
+                                                <Link
+                                                    href={item.href || "#"}
+                                                    className="text-zinc-300 hover:text-primary block duration-150"
+                                                >
+                                                    <span>{item.label}</span>
+                                                </Link>
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                         </div>
@@ -85,16 +92,19 @@ export const Header = () => {
                         <div className="bg-zinc-900 in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border border-zinc-800 p-6 shadow-2xl md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
                             <div className="lg:hidden">
                                 <ul className="space-y-6 text-base">
-                                    {header.nav!.map((item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                href={item!.href!}
-                                                className="text-zinc-300 hover:text-primary block duration-150"
-                                            >
-                                                <span>{item!.label}</span>
-                                            </Link>
-                                        </li>
-                                    ))}
+                                    {header.nav?.map((item, index) => {
+                                        if (!item) return null;
+                                        return (
+                                            <li key={index}>
+                                                <Link
+                                                    href={item.href || "#"}
+                                                    className="text-zinc-300 hover:text-primary block duration-150"
+                                                >
+                                                    <span>{item.label}</span>
+                                                </Link>
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                         </div>

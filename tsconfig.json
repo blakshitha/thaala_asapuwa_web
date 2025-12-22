@@ -28,7 +28,8 @@
         "./*"
       ]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noImplicitAny": false
   },
   "exclude": [
     "node_modules"
