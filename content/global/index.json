@@ -1,11 +1,12 @@
 {
   "header": {
+    "logo": "/uploads/logos/thala-logo.jpg",
     "icon": {
       "name": "BiMehBlank",
-      "color": "yellow",
+      "color": "gold",
       "style": "float"
     },
-    "name": "Dance Acadamy",
+    "name": "Thaala Asapuwa",
     "color": "default",
     "nav": [
       {
@@ -13,12 +14,16 @@
         "label": "Home"
       },
       {
+        "href": "/calendar",
+        "label": "Calendar"
+      },
+      {
         "href": "/about",
         "label": "About"
       },
       {
-        "href": "/posts",
-        "label": "Blog"
+        "href": "/contact",
+        "label": "Contact"
       }
     ]
   },
@@ -26,33 +31,36 @@
     "social": [
       {
         "icon": {
-          "name": "FaLinkedin"
+          "name": "BiLogoFacebookSquare",
+          "style": "float"
         },
-        "url": "https://www.linkedin.com/company/tinacms"
+        "url": "https://www.facebook.com/ThaalaAsapuwa/"
       },
       {
         "icon": {
-          "name": "FaGithub"
+          "name": "AiFillInstagram",
+          "style": "float"
         },
-        "url": "https://github.com/tinacms/tinacms"
+        "url": "https://www.instagram.com/srilankandanceacademyvic/"
       },
       {
         "icon": {
           "name": "FaYoutube"
         },
-        "url": "https://www.youtube.com/@TinaCMS"
+        "url": "https://www.youtube.com/@srilankandanceacademyofvic5875"
       },
       {
         "icon": {
-          "name": "FaXTwitter"
+          "name": "BiLogoTiktok",
+          "style": "float"
         },
-        "url": "https://x.com/TinaCMS"
+        "url": "https://www.tiktok.com/@thaalaasapuwa"
       }
     ]
   },
   "theme": {
-    "color": "yellow",
+    "color": "gold",
     "font": "sans",
-    "darkMode": "light"
+    "darkMode": "dark"
   }
 }
