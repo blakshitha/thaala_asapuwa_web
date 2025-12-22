@@ -1,11 +1,11 @@
 {
   "header": {
     "icon": {
-      "name": "Tina",
-      "color": "orange",
+      "name": "BiMehBlank",
+      "color": "yellow",
       "style": "float"
     },
-    "name": "Tina Starter",
+    "name": "Dance Acadamy",
     "color": "default",
     "nav": [
       {
@@ -51,7 +51,7 @@
     ]
   },
   "theme": {
-    "color": "blue",
+    "color": "yellow",
     "font": "sans",
     "darkMode": "light"
   }
