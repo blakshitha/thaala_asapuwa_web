@@ -35,12 +35,12 @@ export const ProductionHero = ({ data }: { data: any }) => {
                             {data.subtitle}
                         </p>
                     )}
-                    {data.description && (
+                    {data.body && (
                         <div
                             className="prose prose-neutral mt-6 max-w-none text-muted-foreground"
-                            data-tina-field={tinaField(data, "description")}
+                            data-tina-field={tinaField(data, "body")}
                         >
-                            <TinaMarkdown content={data.description} />
+                            <TinaMarkdown content={data.body} />
                         </div>
                     )}
 
@@ -60,13 +60,13 @@ export const ProductionHero = ({ data }: { data: any }) => {
                     )}
                 </div>
 
-                {data.image && (
+                {data.imageSrc && (
                     <div
                         className="relative overflow-hidden rounded-2xl border bg-background shadow-lg"
-                        data-tina-field={tinaField(data, "image")}
+                        data-tina-field={tinaField(data, "imageSrc")}
                     >
                         <Image
-                            src={data.image}
+                            src={data.imageSrc}
                             alt={data.imageAlt || "Production hero"}
                             width={1200}
                             height={900}
@@ -89,7 +89,7 @@ export const productionHeroBlockSchema: Template = {
             eyebrow: "Production",
             title: "Akram Khan Company",
             subtitle: "Touring productions and repertoire",
-            description:
+            body:
                 "A curated overview of touring productions with dates, collaborators, and press highlights.",
             actions: [
                 {
@@ -119,12 +119,12 @@ export const productionHeroBlockSchema: Template = {
         {
             type: "rich-text",
             label: "Description",
-            name: "description",
+            name: "body",
         },
         {
             type: "image",
             label: "Image",
-            name: "image",
+            name: "imageSrc",
         },
         {
             type: "string",
