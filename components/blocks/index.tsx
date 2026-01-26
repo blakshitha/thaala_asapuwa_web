@@ -8,8 +8,6 @@ import { Video } from "./video";
 import { Callout } from "./callout";
 import { Stats } from "./stats";
 import { CallToAction } from "./call-to-action";
-import { ProductionHero } from "./production-hero";
-import { ProductionGrid } from "./production-grid";
 
 export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
     if (!props.blocks) return null;
@@ -44,10 +42,6 @@ const Block = (block: PageBlocks) => {
             return <Testimonial data={block} />;
         case "PageBlocksCta":
             return <CallToAction data={block} />;
-        case "PageBlocksProductionHero":
-            return <ProductionHero data={block as any} />;
-        case "PageBlocksProductionGrid":
-            return <ProductionGrid data={block as any} />;
         default:
             return null;
     }
