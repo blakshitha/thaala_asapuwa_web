@@ -23,9 +23,9 @@ export const Footer = () => {
                                 <Image
                                     src={header.logo}
                                     alt={header?.name || "Logo"}
-                                    width={180}
-                                    height={54}
-                                    className="h-12 w-auto"
+                                    width={220}
+                                    height={72}
+                                    className="h-16 w-auto"
                                 />
                             ) : (
                                 <Icon

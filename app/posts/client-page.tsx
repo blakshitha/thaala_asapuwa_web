@@ -34,6 +34,8 @@ export default function PostsClientPage(props: ClientPostProps) {
       url: `/posts/${post._sys.breadcrumbs.join('/')}`,
       excerpt: post.excerpt,
       heroImg: post.heroImg,
+      location: post.location,
+      venue: post.venue,
       author: {
         name: post.author?.name || 'Anonymous',
         avatar: post.author?.avatar,
@@ -47,10 +49,10 @@ export default function PostsClientPage(props: ClientPostProps) {
         <div className="container flex flex-col items-center gap-16">
           <div className="text-center">
             <h2 className="mx-auto mb-6 text-pretty text-3xl font-semibold md:text-4xl lg:max-w-3xl">
-              Blog Posts
+              Events
             </h2>
             <p className="mx-auto max-w-2xl text-muted-foreground md:text-lg">
-              Discover the latest insights and tutorials about modern web development, UI design, and component-driven architecture.
+              Explore upcoming and past dance events, performances, and workshops.
             </p>
           </div>
 
@@ -64,6 +66,9 @@ export default function PostsClientPage(props: ClientPostProps) {
                   <div className="sm:col-span-5">
                     <div className="mb-4 md:mb-6">
                       <div className="flex flex-wrap gap-3 text-xs uppercase tracking-wider text-muted-foreground md:gap-5 lg:gap-6">
+                        {post.published && <span>{post.published}</span>}
+                        {post.location && <span>{post.location}</span>}
+                        {post.venue && <span>{post.venue}</span>}
                         {post.tags?.map((tag) => <span key={tag}>{tag}</span>)}
                       </div>
                     </div>
@@ -102,7 +107,7 @@ export default function PostsClientPage(props: ClientPostProps) {
                         href={post.url}
                         className="inline-flex items-center font-semibold hover:underline md:text-base"
                       >
-                        <span>Read more</span>
+                        <span>View event</span>
                         <ArrowRight className="ml-2 size-4 transition-transform" />
                       </Link>
                     </div>

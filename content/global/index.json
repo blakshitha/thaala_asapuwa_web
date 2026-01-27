@@ -18,6 +18,10 @@
         "label": "Calendar"
       },
       {
+        "href": "posts",
+        "label": "Events"
+      },
+      {
         "href": "/about",
         "label": "About"
       },

@@ -33,10 +33,32 @@ export default function PostClientPage(props: ClientPostProps) {
     const { data } = useTina({ ...props });
     const post = data.post;
 
-    const date = new Date(post.date!);
+    const startDate = post.date ? new Date(post.date) : null;
+    const endDate = post.endDate ? new Date(post.endDate) : null;
+
+    const formatDateOnly = (value: Date) => format(value, "MMM dd, yyyy");
+    const formatTimeOnly = (value: Date) => format(value, "h:mm a");
+    const formatDateTime = (value: Date) =>
+        format(value, "MMM dd, yyyy • h:mm a");
+
     let formattedDate = "";
-    if (!isNaN(date.getTime())) {
-        formattedDate = format(date, "MMM dd, yyyy");
+    if (startDate && !isNaN(startDate.getTime())) {
+        if (endDate && !isNaN(endDate.getTime())) {
+            const sameDay =
+                format(startDate, "yyyy-MM-dd") ===
+                format(endDate, "yyyy-MM-dd");
+            formattedDate = sameDay
+                ? `${formatDateOnly(startDate)} • ${formatTimeOnly(
+                      startDate,
+                  )} – ${formatTimeOnly(endDate)}`
+                : `${formatDateOnly(startDate)} • ${formatTimeOnly(
+                      startDate,
+                  )} – ${formatDateOnly(endDate)} • ${formatTimeOnly(
+                      endDate,
+                  )}`;
+        } else {
+            formattedDate = formatDateTime(startDate);
+        }
     }
 
     const titleColour =
@@ -55,12 +77,39 @@ export default function PostClientPage(props: ClientPostProps) {
                         {post.title}
                     </span>
                 </h2>
-                <div
-                    data-tina-field={tinaField(post, "author")}
-                    className="flex items-center justify-center mb-16"
-                >
+                <div className="flex flex-col items-center gap-6 mb-16">
+                    {(formattedDate || post.location || post.venue) && (
+                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+                            {formattedDate && (
+                                <span data-tina-field={tinaField(post, "date")}>
+                                    {formattedDate}
+                                </span>
+                            )}
+                            {post.location && (
+                                <span data-tina-field={tinaField(post, "location")}>
+                                    {post.location}
+                                </span>
+                            )}
+                            {post.venue && (
+                                <span data-tina-field={tinaField(post, "venue")}>
+                                    {post.venue}
+                                </span>
+                            )}
+                        </div>
+                    )}
+                    {post.excerpt && (
+                        <div
+                            data-tina-field={tinaField(post, "excerpt")}
+                            className="prose dark:prose-dark text-center max-w-2xl text-muted-foreground"
+                        >
+                            <TinaMarkdown content={post.excerpt} />
+                        </div>
+                    )}
                     {post.author && (
-                        <>
+                        <div
+                            data-tina-field={tinaField(post, "author")}
+                            className="flex items-center justify-center"
+                        >
                             {post.author.avatar && (
                                 <div className="shrink-0 mr-4">
                                     <Image
@@ -81,19 +130,21 @@ export default function PostClientPage(props: ClientPostProps) {
                                 data-tina-field={tinaField(post.author, "name")}
                                 className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white"
                             >
-                                {post.author.name}
+                                Hosted by {post.author.name}
                             </p>
-                            <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">
-                                —
-                            </span>
-                        </>
+                        </div>
                     )}
-                    <p
-                        data-tina-field={tinaField(post, "date")}
-                        className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150"
-                    >
-                        {formattedDate}
-                    </p>
+                    {post.ticketUrl && (
+                        <a
+                            href={post.ticketUrl}
+                            data-tina-field={tinaField(post, "ticketUrl")}
+                            className="inline-flex items-center rounded-full bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                        >
+                            <span data-tina-field={tinaField(post, "ticketLabel")}>
+                                {post.ticketLabel || "Get tickets"}
+                            </span>
+                        </a>
+                    )}
                 </div>
                 {post.heroImg && (
                     <div className="px-4 w-full">

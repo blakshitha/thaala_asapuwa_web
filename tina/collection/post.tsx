@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Collection } from "tinacms";
 
 const Post: Collection = {
-    label: "Blog Posts",
+    label: "Events",
     name: "post",
     path: "content/posts",
     format: "mdx",
@@ -25,13 +25,13 @@ const Post: Collection = {
         {
             type: "image",
             name: "heroImg",
-            label: "Hero Image",
+            label: "Event Hero Image",
             // @ts-ignore
             uploadDir: () => "posts",
         },
         {
             type: "rich-text",
-            label: "Excerpt",
+            label: "Event Summary",
             name: "excerpt",
             overrides: {
                 toolbar: ["bold", "italic", "link"],
@@ -39,7 +39,7 @@ const Post: Collection = {
         },
         {
             type: "reference",
-            label: "Author",
+            label: "Organizer",
             name: "author",
             collections: ["author"],
             ui: {
@@ -81,7 +81,7 @@ const Post: Collection = {
         },
         {
             type: "datetime",
-            label: "Posted Date",
+            label: "Event Date",
             name: "date",
             ui: {
                 dateFormat: "MMMM DD YYYY",
@@ -89,8 +89,40 @@ const Post: Collection = {
             },
         },
         {
+            type: "datetime",
+            label: "End Date (optional)",
+            name: "endDate",
+            ui: {
+                dateFormat: "MMMM DD YYYY",
+                timeFormat: "hh:mm A",
+            },
+        },
+        {
+            type: "string",
+            label: "Location",
+            name: "location",
+        },
+        {
+            type: "string",
+            label: "Venue",
+            name: "venue",
+        },
+        {
+            type: "string",
+            label: "Ticket URL",
+            name: "ticketUrl",
+        },
+        {
+            type: "string",
+            label: "Ticket Button Label",
+            name: "ticketLabel",
+            ui: {
+                defaultValue: "Get tickets",
+            },
+        },
+        {
             type: "object",
-            label: "Tags",
+            label: "Event Tags",
             name: "tags",
             list: true,
             fields: [
@@ -117,7 +149,7 @@ const Post: Collection = {
         },
         {
             type: "rich-text",
-            label: "Body",
+            label: "Event Details",
             name: "_body",
             templates: [
                 {

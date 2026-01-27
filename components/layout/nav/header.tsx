@@ -30,9 +30,9 @@ export const Header = () => {
                                     <Image
                                         src={header.logo}
                                         alt={header.name || "Logo"}
-                                        width={240}
-                                        height={72}
-                                        className="h-16 w-auto object-contain"
+                                        width={320}
+                                        height={96}
+                                        className="h-20 w-auto object-contain"
                                     />
                                 ) : header.icon?.name ? (
                                     <>
