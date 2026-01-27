@@ -89,8 +89,7 @@ export const productionHeroBlockSchema: Template = {
             eyebrow: "Production",
             title: "Akram Khan Company",
             subtitle: "Touring productions and repertoire",
-            body:
-                "A curated overview of touring productions with dates, collaborators, and press highlights.",
+            body: "A curated overview of touring productions with dates, collaborators, and press highlights.",
             actions: [
                 {
                     label: "View Touring",
