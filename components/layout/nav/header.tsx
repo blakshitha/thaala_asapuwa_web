@@ -74,10 +74,15 @@ export const Header = () => {
                                 <ul className="flex gap-8 text-sm">
                                     {header.nav?.map((item, index) => {
                                         if (!item) return null;
+                                        const href = item.href
+                                            ? item.href.startsWith("/")
+                                                ? item.href
+                                                : `/${item.href}`
+                                            : "#";
                                         return (
                                             <li key={index}>
                                                 <Link
-                                                    href={item.href || "#"}
+                                                    href={href}
                                                     className="text-zinc-300 hover:text-primary block duration-150"
                                                 >
                                                     <span>{item.label}</span>
@@ -94,10 +99,15 @@ export const Header = () => {
                                 <ul className="space-y-6 text-base">
                                     {header.nav?.map((item, index) => {
                                         if (!item) return null;
+                                        const href = item.href
+                                            ? item.href.startsWith("/")
+                                                ? item.href
+                                                : `/${item.href}`
+                                            : "#";
                                         return (
                                             <li key={index}>
                                                 <Link
-                                                    href={item.href || "#"}
+                                                    href={href}
                                                     className="text-zinc-300 hover:text-primary block duration-150"
                                                 >
                                                     <span>{item.label}</span>

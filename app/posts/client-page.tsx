@@ -18,30 +18,34 @@ interface ClientPostProps {
 }
 
 export default function PostsClientPage(props: ClientPostProps) {
-  const posts = props.data?.postConnection.edges!.map((postData) => {
-    const post = postData!.node!;
-    const date = new Date(post.date!);
-    let formattedDate = '';
-    if (!isNaN(date.getTime())) {
-      formattedDate = format(date, 'MMM dd, yyyy');
-    }
+  const posts = (props.data?.postConnection.edges || [])
+    .map((postData) => {
+      const post = postData?.node;
+      if (!post) return null;
 
-    return {
-      id: post.id,
-      published: formattedDate,
-      title: post.title,
-      tags: post.tags?.map((tag) => tag?.tag?.name) || [],
-      url: `/posts/${post._sys.breadcrumbs.join('/')}`,
-      excerpt: post.excerpt,
-      heroImg: post.heroImg,
-      location: post.location,
-      venue: post.venue,
-      author: {
-        name: post.author?.name || 'Anonymous',
-        avatar: post.author?.avatar,
-      }
-    }
-  });
+      const date = post.date ? new Date(post.date) : null;
+      const dateValue = date && !isNaN(date.getTime()) ? date.getTime() : 0;
+      const formattedDate = dateValue ? format(date!, 'MMM dd, yyyy') : '';
+
+      return {
+        id: post.id,
+        published: formattedDate,
+        dateValue,
+        title: post.title,
+        tags: post.tags?.map((tag) => tag?.tag?.name).filter(Boolean) || [],
+        url: `/posts/${post._sys.breadcrumbs.join('/')}`,
+        excerpt: post.excerpt,
+        heroImg: post.heroImg,
+        location: post.location,
+        venue: post.venue,
+        author: {
+          name: post.author?.name || 'Anonymous',
+          avatar: post.author?.avatar,
+        },
+      };
+    })
+    .filter((post): post is NonNullable<typeof post> => Boolean(post))
+    .sort((a, b) => b.dateValue - a.dateValue);
 
   return (
     <ErrorBoundary>
@@ -57,79 +61,95 @@ export default function PostsClientPage(props: ClientPostProps) {
           </div>
 
           <div className="grid gap-y-10 sm:grid-cols-12 sm:gap-y-12 md:gap-y-16 lg:gap-y-20">
-            {posts.map((post) => (
-              <Card
-                key={post.id}
-                className="order-last border-0 bg-transparent shadow-none sm:order-first sm:col-span-12 lg:col-span-10 lg:col-start-2"
-              >
-                <div className="grid gap-y-6 sm:grid-cols-10 sm:gap-x-5 sm:gap-y-0 md:items-center md:gap-x-8 lg:gap-x-12">
-                  <div className="sm:col-span-5">
-                    <div className="mb-4 md:mb-6">
-                      <div className="flex flex-wrap gap-3 text-xs uppercase tracking-wider text-muted-foreground md:gap-5 lg:gap-6">
-                        {post.published && <span>{post.published}</span>}
-                        {post.location && <span>{post.location}</span>}
-                        {post.venue && <span>{post.venue}</span>}
-                        {post.tags?.map((tag) => <span key={tag}>{tag}</span>)}
+            {posts.length === 0 ? (
+              <p className="sm:col-span-12 text-center text-muted-foreground">
+                No events are published yet.
+              </p>
+            ) : (
+              posts.map((post) => (
+                <Card
+                  key={post.id}
+                  className="order-last border-0 bg-transparent shadow-none sm:order-first sm:col-span-12 lg:col-span-10 lg:col-start-2"
+                >
+                  <div className="grid gap-y-6 sm:grid-cols-10 sm:gap-x-5 sm:gap-y-0 md:items-center md:gap-x-8 lg:gap-x-12">
+                    <div className="sm:col-span-5">
+                      <div className="mb-4 md:mb-6">
+                        <div className="flex flex-wrap gap-3 text-xs uppercase tracking-wider text-muted-foreground md:gap-5 lg:gap-6">
+                          {post.published && <span>{post.published}</span>}
+                          {post.location && <span>{post.location}</span>}
+                          {post.venue && <span>{post.venue}</span>}
+                          {post.tags?.map((tag) => <span key={tag}>{tag}</span>)}
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-semibold md:text-2xl lg:text-3xl">
+                        <Link
+                          href={post.url}
+                          className="hover:underline"
+                        >
+                          {post.title}
+                        </Link>
+                      </h3>
+                      {post.excerpt && (
+                        <div className="mt-4 text-muted-foreground md:mt-5">
+                          {typeof post.excerpt === 'string' ? (
+                            <p>{post.excerpt}</p>
+                          ) : (
+                            <TinaMarkdown content={post.excerpt} />
+                          )}
+                        </div>
+                      )}
+                      <div className="mt-6 flex items-center space-x-4 text-sm md:mt-8">
+                        <Avatar>
+                          {post.author.avatar && (
+                            <AvatarImage
+                              src={post.author.avatar}
+                              alt={post.author.name}
+                              className="h-8 w-8"
+                            />
+                          )}
+                          <AvatarFallback>
+                            <UserRound size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-muted-foreground">{post.author.name}</span>
+                        {post.published && (
+                          <>
+                            <span className="text-muted-foreground">•</span>
+                            <span className="text-muted-foreground">
+                              {post.published}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      <div className="mt-6 flex items-center space-x-2 md:mt-8">
+                        <Link
+                          href={post.url}
+                          className="inline-flex items-center font-semibold hover:underline md:text-base"
+                        >
+                          <span>View event</span>
+                          <ArrowRight className="ml-2 size-4 transition-transform" />
+                        </Link>
                       </div>
                     </div>
-                    <h3 className="text-xl font-semibold md:text-2xl lg:text-3xl">
-                      <Link
-                        href={post.url}
-                        className="hover:underline"
-                      >
-                        {post.title}
-                      </Link>
-                    </h3>
-                    <div className="mt-4 text-muted-foreground md:mt-5">
-                      <TinaMarkdown content={post.excerpt} />
-                    </div>
-                    <div className="mt-6 flex items-center space-x-4 text-sm md:mt-8">
-                      <Avatar>
-                        {post.author.avatar && (
-                          <AvatarImage
-                            src={post.author.avatar}
-                            alt={post.author.name}
-                            className="h-8 w-8"
-                          />
-                        )}
-                        <AvatarFallback>
-                          <UserRound size={16} strokeWidth={2} className="opacity-60" aria-hidden="true" />
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-muted-foreground">{post.author.name}</span>
-                      <span className="text-muted-foreground">•</span>
-                      <span className="text-muted-foreground">
-                        {post.published}
-                      </span>
-                    </div>
-                    <div className="mt-6 flex items-center space-x-2 md:mt-8">
-                      <Link
-                        href={post.url}
-                        className="inline-flex items-center font-semibold hover:underline md:text-base"
-                      >
-                        <span>View event</span>
-                        <ArrowRight className="ml-2 size-4 transition-transform" />
-                      </Link>
-                    </div>
+                    {post.heroImg && (
+                      <div className="order-first sm:order-last sm:col-span-5">
+                        <Link href={post.url} className="block">
+                          <div className="aspect-video overflow-clip rounded-lg border border-border">
+                            <Image
+                              width={533}
+                              height={300}
+                              src={post.heroImg}
+                              alt={post.title}
+                              className="h-full w-full object-cover transition-opacity duration-200 fade-in hover:opacity-70"
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                    )}
                   </div>
-                  {post.heroImg && (
-                    <div className="order-first sm:order-last sm:col-span-5">
-                      <Link href={post.url} className="block">
-                        <div className="aspect-[16/9] overflow-clip rounded-lg border border-border">
-                          <Image
-                            width={533}
-                            height={300}
-                            src={post.heroImg}
-                            alt={post.title}
-                            className="h-full w-full object-cover transition-opacity duration-200 fade-in hover:opacity-70"
-                          />
-                        </div>
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </Section>

@@ -150,17 +150,16 @@ export default function PostClientPage(props: ClientPostProps) {
                     <div className="px-4 w-full">
                         <div
                             data-tina-field={tinaField(post, "heroImg")}
-                            className="relative max-w-4xl lg:max-w-5xl mx-auto"
+                            className="relative max-w-6xl 2xl:max-w-7xl mx-auto"
                         >
                             <Image
                                 priority={true}
                                 src={post.heroImg}
                                 alt={post.title}
-                                className="absolute block mx-auto rounded-lg w-full h-auto blur-2xl brightness-150 contrast-[0.9] dark:brightness-150 saturate-200 opacity-50 dark:opacity-30 mix-blend-multiply dark:mix-blend-hard-light"
+                                className="absolute inset-0 block mx-auto rounded-xl w-full h-full object-cover blur-3xl brightness-150 contrast-[0.9] dark:brightness-150 saturate-200 opacity-50 dark:opacity-30 mix-blend-multiply dark:mix-blend-hard-light"
                                 aria-hidden="true"
                                 width={500}
                                 height={500}
-                                style={{ maxHeight: "25vh" }}
                             />
                             <Image
                                 priority={true}
@@ -168,8 +167,7 @@ export default function PostClientPage(props: ClientPostProps) {
                                 alt={post.title}
                                 width={500}
                                 height={500}
-                                className="relative z-10 mb-14 mx-auto block rounded-lg w-full h-auto opacity-100"
-                                style={{ maxWidth: "25vh" }}
+                                className="relative z-10 mb-14 mx-auto block rounded-xl w-full h-auto opacity-100"
                             />
                         </div>
                     </div>
