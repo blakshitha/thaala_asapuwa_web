@@ -30,6 +30,36 @@ const Post: Collection = {
             uploadDir: () => "posts",
         },
         {
+            type: "object",
+            label: "Event Gallery",
+            name: "gallery",
+            list: true,
+            ui: {
+                itemProps: (item) => {
+                    return { label: item?.alt || item?.caption || "Gallery image" };
+                },
+            },
+            fields: [
+                {
+                    type: "image",
+                    label: "Image",
+                    name: "image",
+                    // @ts-ignore
+                    uploadDir: () => "posts",
+                },
+                {
+                    type: "string",
+                    label: "Alt text",
+                    name: "alt",
+                },
+                {
+                    type: "string",
+                    label: "Caption",
+                    name: "caption",
+                },
+            ],
+        },
+        {
             type: "rich-text",
             label: "Event Summary",
             name: "excerpt",

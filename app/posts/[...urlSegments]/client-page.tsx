@@ -32,6 +32,16 @@ export default function PostClientPage(props: ClientPostProps) {
     const { theme } = useLayout();
     const { data } = useTina({ ...props });
     const post = data.post;
+    const gallery = (post as unknown as {
+        gallery?: Array<{
+            image?: string | null;
+            alt?: string | null;
+            caption?: string | null;
+        }> | null;
+    }).gallery;
+    const [galleryIndex, setGalleryIndex] = React.useState(0);
+    const galleryItems = (gallery || []).filter((item) => item?.image);
+    const activeGalleryItem = galleryItems[galleryIndex];
 
     const startDate = post.date ? new Date(post.date) : null;
     const endDate = post.endDate ? new Date(post.endDate) : null;
@@ -170,6 +180,96 @@ export default function PostClientPage(props: ClientPostProps) {
                                 className="relative z-10 mb-14 mx-auto block rounded-xl w-full h-auto opacity-100"
                             />
                         </div>
+                    </div>
+                )}
+                {gallery && gallery.length > 0 && (
+                    <div
+                        data-tina-field={tinaField(post, "gallery")}
+                        className="mt-10 w-full"
+                    >
+                        {activeGalleryItem && (
+                            <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+                                <div className="relative">
+                                    <figure className="overflow-hidden rounded-2xl border border-border bg-card">
+                                        <div className="relative aspect-video">
+                                            <Image
+                                                data-tina-field={tinaField(
+                                                    activeGalleryItem,
+                                                    "image"
+                                                )}
+                                                src={activeGalleryItem.image!}
+                                                alt={activeGalleryItem.alt || post.title}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        {activeGalleryItem.caption && (
+                                            <figcaption
+                                                data-tina-field={tinaField(
+                                                    activeGalleryItem,
+                                                    "caption"
+                                                )}
+                                                className="px-4 py-3 text-sm text-muted-foreground"
+                                            >
+                                                {activeGalleryItem.caption}
+                                            </figcaption>
+                                        )}
+                                    </figure>
+                                    {galleryItems.length > 1 && (
+                                        <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-3">
+                                            <button
+                                                type="button"
+                                                aria-label="Previous image"
+                                                className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm backdrop-blur transition hover:bg-background"
+                                                onClick={() =>
+                                                    setGalleryIndex((prev) =>
+                                                        prev === 0
+                                                            ? galleryItems.length - 1
+                                                            : prev - 1
+                                                    )
+                                                }
+                                            >
+                                                ‹
+                                            </button>
+                                            <button
+                                                type="button"
+                                                aria-label="Next image"
+                                                className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm backdrop-blur transition hover:bg-background"
+                                                onClick={() =>
+                                                    setGalleryIndex((prev) =>
+                                                        prev ===
+                                                        galleryItems.length - 1
+                                                            ? 0
+                                                            : prev + 1
+                                                    )
+                                                }
+                                            >
+                                                ›
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                                {galleryItems.length > 1 && (
+                                    <div className="flex items-center justify-center gap-2">
+                                        {galleryItems.map((item, index) => (
+                                            <button
+                                                key={`${item.image}-${index}`}
+                                                type="button"
+                                                aria-label={`Go to image ${index + 1}`}
+                                                className={`h-2.5 w-2.5 rounded-full transition ${
+                                                    index === galleryIndex
+                                                        ? "bg-primary"
+                                                        : "bg-muted-foreground/40"
+                                                }`}
+                                                onClick={() =>
+                                                    setGalleryIndex(index)
+                                                }
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
                 <div
