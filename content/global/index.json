@@ -14,10 +14,6 @@
         "label": "Home"
       },
       {
-        "href": "/calendar",
-        "label": "Calendar"
-      },
-      {
         "href": "/posts",
         "label": "Events"
       },
